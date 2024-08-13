@@ -35,9 +35,9 @@ class RunCommand extends Command
         //$rule = Rule::find(10)->car;
         //$car = Car::find(5)->rule;
 
-        $rules = Worker::find(2)->rule;
+        $rules = Worker::find(1)->rule;
         foreach ($rules as $rule) {
-            echo Car::find($rule->car_id)->name . "->" . Car::find($rule->car_id)->driver->name . "\n";
+            echo Car::find($rule->car_id)->name . " -> " . Car::find($rule->car_id)->comfort . " -> " . Car::find($rule->car_id)->driver->name . "\n";
         }
         //dump(Worker::find(2)->rule);
     }
