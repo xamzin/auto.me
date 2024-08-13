@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use App\Models\Worker;
 
@@ -14,20 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $drivers = [
-            'Сергей',
-            'Максим',
-            'Пётр',
-            'Владимир',
-            'Алексей',
-        ];
-
-        foreach ($drivers as $driver) {
+        for ($i = 1; $i <= 5; $i++) {
             DB::table('drivers')->insert([
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
 
-                'name' => $driver,
+                'name' => fake('ru_RU')->unique()->name(),
             ]);
         }
 
@@ -70,13 +63,14 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        for($i = 1; $i <= 20; $i++) {
+        $amount = 20; //кол-во сотрудников
+        for ($i = 1; $i <= $amount; $i++) {
             DB::table('workers')->insert([
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
 
-                'name' => 'Имя'.$i.' Фамилия'.$i,
-                'position_id' => rand(1, 6),
+                'name' => fake('ru_RU')->unique()->name(),
+                'position_id' => rand(1, count($positions)),
             ]);
         }
 
@@ -101,14 +95,23 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-//        for($i = 1; $i < 20; $i++) {
-//            DB::table('timings')->insert([
-//                'created_at' => Carbon::now(),
-//                'updated_at' => Carbon::now(),
-//
-//                'name' => 'Имя Фамилия'.$i,
-//                'position_id' => rand(1, 10),
-//            ]);
-//        }
+        for ($i = 1; $i < 100; $i++) {
+            $cars = null;
+            $rules = Worker::find(1)->rule;
+            foreach ($rules as $rule) {
+                $cars[] = $rule->car_id;
+            }
+            $dt = Carbon::now()->addHour(rand(1, 168))->roundMinute();
+            if (is_array($cars)) {
+                DB::table('timings')->insert([
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                    'car_id' => Arr::random($cars),
+                    'worker_id' => rand(1, $amount),
+                    'start' => $dt,
+                    'end' => $dt->addHour(rand(1,4)),
+                ]);
+            }
+        }
     }
 }
