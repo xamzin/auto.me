@@ -24,23 +24,40 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        $comforts = [
+            'Премиум',
+            'Люкс',
+            'Бизнес',
+            'Комфорт',
+            'Эконом',
+        ];
+
+        foreach ($comforts as $comfort) {
+            DB::table('comforts')->insert([
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+
+                'name' => $comfort,
+            ]);
+            $i++;
+        }
+
         $cars = [
-            'Mersedes' => 'Премиум',
-            'Tayota' => 'Люкс',
-            'Hyundai' => 'Бизнес',
-            'ВАЗ' => 'Комфорт',
-            'Газ' => 'Эконом',
+            'Mersedes',
+            'Tayota',
+            'Hyundai',
+            'ВАЗ',
+            'Газ',
         ];
 
         $i = 1;
-        foreach ($cars as $key => $value) {
+        foreach ($cars as $car) {
             DB::table('cars')->insert([
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
 
-                'model' => $key,
-                'comfort' => $i,
-                'comfort_name' => $value,
+                'model' => $car,
+                'comfort_id' => $i,
                 'driver_id' => $i,
             ]);
             $i++;
@@ -98,7 +115,8 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 1; $i < 100; $i++) {
             $cars = null;
-            $rules = Worker::find(1)->rule;
+            $worker_id = rand(1, $amount);
+            $rules = Worker::find($worker_id)->rule;
             foreach ($rules as $rule) {
                 $cars[] = $rule->car_id;
             }
@@ -108,7 +126,7 @@ class DatabaseSeeder extends Seeder
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                     'car_id' => Arr::random($cars),
-                    'worker_id' => rand(1, $amount),
+                    'worker_id' => $worker_id,
                     'start' => $dt,
                     'end' => $dt->addHour(rand(4,8)),
                 ]);

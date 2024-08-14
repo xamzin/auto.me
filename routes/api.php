@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Car;
 
@@ -15,9 +14,4 @@ use App\Http\Controllers\Api\Car;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 Route::get('/car/free', [Car::class, 'free'])->name('free');
-Route::get('/car/freeall', [Car::class, 'freeall'])->name('freeall');
