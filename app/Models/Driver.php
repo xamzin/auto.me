@@ -14,6 +14,10 @@ class Driver extends Model
         'name',
     ];
 
+    protected $visible = [
+        'name'
+    ];
+
     //Получаем авто связаное с водителем
     public function car(): HasOne
     {

@@ -2,10 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Worker;
 use App\Models\Car;
-use App\Models\Driver;
-use App\Models\Rule;
 use Illuminate\Console\Command;
 
 class RunCommand extends Command
@@ -29,17 +26,7 @@ class RunCommand extends Command
      */
     public function handle()
     {
-        //Тут код для тестирования
-        //$car = Car::find(5)->driver;
-        //$driver = Driver::find(5)->car;
-        //$rule = Rule::find(10)->car;
-        //$car = Car::find(5)->rule;
-
-        $rules = Worker::find(1)->rule;
-        foreach ($rules as $rule) {
-            echo Car::find($rule->car_id)->name . " -> " . Car::find($rule->car_id)->comfort . " -> " . Car::find($rule->car_id)->driver->name . "\n";
-        }
-        //dump(Worker::find(2)->rule);
+        dump(Car::find(5)->driver->toArray());
     }
 
 }

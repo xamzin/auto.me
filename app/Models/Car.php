@@ -5,19 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Car extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'comfort',
-        'driver_id',
+        'model',
+        'driver_id', 'comfort_id'
+    ];
+
+    protected $visible = [
+        'id', 'model',
     ];
 
     //получает водителя связанного с авто
     public function driver(): BelongsTo {
         return $this->BelongsTo(Driver::class);
+    }
+
+    //получает категорию комфорта связанного с авто
+    public function comfort(): BelongsTo {
+        return $this->BelongsTo(Comfort::class);
     }
 }

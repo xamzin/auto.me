@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('name');
-            $table->string('comfort');
+            $table->string('model');
+            $table->foreignId('comfort_id')->constrained();
             $table->foreignId('driver_id')->constrained();
         });
     }
