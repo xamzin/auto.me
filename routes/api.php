@@ -20,3 +20,4 @@ use App\Http\Controllers\Api\Car;
 //});
 
 Route::get('/car/free', [Car::class, 'free'])->name('free');
+Route::get('/car/freeall', [Car::class, 'freeall'])->name('freeall');

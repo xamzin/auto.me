@@ -12,8 +12,12 @@ class Car extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'comfort',
+        'model', 'comfort', 'comfort_name',
         'driver_id',
+    ];
+
+    protected $visible = [
+        'id', 'model', 'comfort', 'comfort_name',
     ];
 
     //получает водителя связанного с авто

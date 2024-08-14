@@ -16,6 +16,6 @@ class Worker extends Model
     ];
 
     public function rule(): HasMany {
-        return $this->HasMany(Rule::class, 'position_id', 'position_id');
+        return $this->HasMany(RuleUseCar::class, 'position_id', 'position_id');
     }
 }

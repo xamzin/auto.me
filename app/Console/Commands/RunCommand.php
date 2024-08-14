@@ -2,14 +2,15 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Car;
 use App\Models\Timing;
 use App\Models\Worker;
-use App\Models\Car;
-use App\Models\Driver;
-use App\Models\Rule;
+use App\Services\CarService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
+use Illuminate\Database\Query\Builder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Http\Resources\FreeCarResource;
 
 class RunCommand extends Command
 {
@@ -32,30 +33,24 @@ class RunCommand extends Command
      */
     public function handle()
     {
-        //Тут код для тестирования
-        //$car = Car::find(5)->driver;
-        //$driver = Driver::find(5)->car;
-        //$rule = Rule::find(10)->car;
-        //$car = Car::find(5)->rule;
+        //$cars = new CarService();
+        //$cars = $cars->getCars(6);
 
-        $timing = Timing::find();
-        dump($timing);
-
-//        for ($i = 1; $i <= 10; $i++) {
-//            $dt = Carbon::now()->addHour(rand(1, 100))->roundMinute();
-//            echo $dt . " - " . $dt->addHour(rand(1,4)) . "\n";
-//        }
-//        $cars = null;
-//        $rules = Worker::find(2)->rule;
+        dump(Car::find(5)->driver->toArray());
+//        $dt = Carbon::now()->addHour(3);
+//        $worker_id = 6;
+//        $free= array();
+//        $rules = Worker::find($worker_id)->rule;
 //        foreach ($rules as $rule) {
-//            $cars[] = $rule->car_id;
+//            if(!count(Timing::query()
+//                ->where('car_id', $rule->car_id)
+//                ->where('start', '<', $dt)
+//                ->where('end', '>', $dt)
+//                ->get())) {
+//                $free[] = $rule->car_id;
+//            }
 //        }
-//        echo is_array($cars) ? Arr::random($cars) . "\n" : "Нет подходящих авто";
-        //echo $rules[0]->car_id;
-//        foreach ($rules as $rule) {
-//            echo Car::find($rule->car_id)->name . " -> " . Car::find($rule->car_id)->comfort . " -> " . Car::find($rule->car_id)->driver->name . "\n";
-//        }
-        //dump(Worker::find(2)->rule);
+//        dump($free);
     }
 
 }

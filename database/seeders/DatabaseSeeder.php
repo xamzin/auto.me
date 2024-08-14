@@ -38,8 +38,9 @@ class DatabaseSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
 
-                'name' => $key,
-                'comfort' => $value,
+                'model' => $key,
+                'comfort' => $i,
+                'comfort_name' => $value,
                 'driver_id' => $i,
             ]);
             $i++;
@@ -63,7 +64,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $amount = 20; //кол-во сотрудников
+        $amount = 30; //кол-во сотрудников
         for ($i = 1; $i <= $amount; $i++) {
             DB::table('workers')->insert([
                 'created_at' => Carbon::now(),
@@ -85,7 +86,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($rules as $key => $value) {
             foreach ($value as $item) {
-                DB::table('rules')->insert([
+                DB::table('rule_use_cars')->insert([
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
 
@@ -101,7 +102,7 @@ class DatabaseSeeder extends Seeder
             foreach ($rules as $rule) {
                 $cars[] = $rule->car_id;
             }
-            $dt = Carbon::now()->addHour(rand(1, 168))->roundMinute();
+            $dt = Carbon::now()->addHour(rand(4, 168))->roundMinute();
             if (is_array($cars)) {
                 DB::table('timings')->insert([
                     'created_at' => Carbon::now(),
@@ -109,7 +110,7 @@ class DatabaseSeeder extends Seeder
                     'car_id' => Arr::random($cars),
                     'worker_id' => rand(1, $amount),
                     'start' => $dt,
-                    'end' => $dt->addHour(rand(1,4)),
+                    'end' => $dt->addHour(rand(4,8)),
                 ]);
             }
         }
