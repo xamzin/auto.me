@@ -7,36 +7,33 @@ use App\Models\Timing;
 use App\Models\Worker;
 use Carbon\Carbon;
 
-final class CarService
+class CarService
 {
     public function getCars(array $validated = null): array
     {
-        if (array_key_exists('worker', $validated)) {$worker_id = (int)$validated['worker'];} else {$worker_id = null;}
-        if (array_key_exists('dt', $validated)) {$dt = $validated['dt'];} else {$dt = null;}
-        if (array_key_exists('comfort', $validated)) {$comfort_id = (int)$validated['comfort'];} else {$comfort_id = null;}
-        if (array_key_exists('model', $validated)) {$model_id = (int)$validated['model'];} else {$model_id = null;}
+        $request = $this->getValidateExists($validated, ['worker' => 'worker_id', 'dt' => 'dt', 'model' => 'model_id', 'comfort' => 'comfort_id']);
 
         $free = array();
-        if (isset($worker_id)) {
-            if (!isset($dt)) $dt = Carbon::now()->addHour(3);
-            $rules = Worker::find($worker_id)->rule;
+        if (isset($request['worker_id'])) {
+            if (!isset($request['dt'])) $request['dt'] = Carbon::now()->addHour(3);
+            $rules = Worker::find($request['worker_id'])->rule;
             foreach ($rules as $rule) {
                 if (Timing::query()
                         ->where('car_id', $rule->car_id)
-                        ->where('start', '<', $dt)
-                        ->where('end', '>', $dt)
+                        ->where('start', '<', $request['dt'])
+                        ->where('end', '>', $request['dt'])
                         ->doesntExist()) {
-                    if (isset($model_id) AND isset($comfort_id)) {
-                        if ($rule->car_id === $model_id AND Car::find($rule->car_id)->comfort->id === $comfort_id) {
+                    if (isset($request['model_id']) AND isset($request['comfort_id'])) {
+                        if ($rule->car_id === (int)$request['model_id'] AND Car::find($rule->car_id)->comfort->id === (int)$request['comfort_id']) {
                             $free[] = $this->getCarInfo($rule->car_id);
                         }
                     } else {
-                        if (isset($model_id)) {
-                            if ($rule->car_id === $model_id) {
+                        if (isset($request['model_id'])) {
+                            if ($rule->car_id === (int)$request['model_id']) {
                                 $free[] = $this->getCarInfo($rule->car_id);
                             }
-                        } elseif (isset($comfort_id)) {
-                            if (Car::find($rule->car_id)->comfort->id === $comfort_id) {
+                        } elseif (isset($request['comfort_id'])) {
+                            if (Car::find($rule->car_id)->comfort->id === (int)$request['comfort_id']) {
                                 $free[] = $this->getCarInfo($rule->car_id);
                             }
                         } else {
@@ -68,6 +65,19 @@ final class CarService
         $comfort['comfort_name'] = $comfort['name'];
         unset($comfort['name']);
         return $comfort;
+    }
+
+    private function getValidateExists(array $validated, array $rulesKey = null): array
+    {
+        $result = array();
+        foreach ($rulesKey as $key => $value) {
+            if (array_key_exists($key, $validated)) {
+                $result[$value] = $validated[$key];
+            } else {
+                $result[$value] = null;
+            }
+        }
+        return $result;
     }
 
 }
