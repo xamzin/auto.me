@@ -11,11 +11,6 @@ class CarService
 {
     public function getCars(array $validated = null): array
     {
-//        if (array_key_exists('worker', $validated)) {$worker_id = (int)$validated['worker'];} else {$worker_id = null;}
-//        if (array_key_exists('dt', $validated)) {$dt = $validated['dt'];} else {$dt = null;}
-//        if (array_key_exists('comfort', $validated)) {$comfort_id = (int)$validated['comfort'];} else {$comfort_id = null;}
-//        if (array_key_exists('model', $validated)) {$model_id = (int)$validated['model'];} else {$model_id = null;}
-
         $request = $this->getValidateExists($validated, ['worker' => 'worker_id', 'dt' => 'dt', 'model' => 'model_id', 'comfort' => 'comfort_id']);
 
         $free = array();
