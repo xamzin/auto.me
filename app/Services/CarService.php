@@ -9,8 +9,13 @@ use Carbon\Carbon;
 
 final class CarService
 {
-    public function getCars(int $worker_id = null, string $dt = null, int $comfort_id = null, int $model_id = null): array
+    public function getCars(array $validated = null): array
     {
+        if (array_key_exists('worker', $validated)) {$worker_id = (int)$validated['worker'];} else {$worker_id = null;}
+        if (array_key_exists('dt', $validated)) {$dt = $validated['dt'];} else {$dt = null;}
+        if (array_key_exists('comfort', $validated)) {$comfort_id = (int)$validated['comfort'];} else {$comfort_id = null;}
+        if (array_key_exists('model', $validated)) {$model_id = (int)$validated['model'];} else {$model_id = null;}
+
         $free = array();
         if (isset($worker_id)) {
             if (!isset($dt)) $dt = Carbon::now()->addHour(3);
